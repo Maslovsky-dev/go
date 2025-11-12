@@ -79,4 +79,24 @@ func TestTop10(t *testing.T) {
 			require.Equal(t, expected, Top10(text))
 		}
 	})
+
+	t.Run("less than 10 words", func(t *testing.T) {
+		input := "one two three two three three"
+		expected := []string{"three", "two", "one"} // 3>2>1
+		require.Equal(t, expected, Top10(input))
+	})
+
+	t.Run("more than 10 words with equal frequency", func(t *testing.T) {
+		input := "z y x w v u t s r q p o"
+		// все встречаются 1 раз, лексикографический порядок:
+		expected := []string{"o", "p", "q", "r", "s", "t", "u", "v", "w", "x"}
+		require.Equal(t, expected, Top10(input))
+	})
+
+	t.Run("words with punctuation", func(t *testing.T) {
+		input := "hi! hi, hi. hi? hi"
+		// "hi!" "hi," "hi." "hi?" "hi" — разные слова
+		expected := []string{"hi", "hi!", "hi,", "hi.", "hi?"}
+		require.Equal(t, expected, Top10(input))
+	})
 }
