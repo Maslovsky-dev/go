@@ -17,7 +17,8 @@ func Top10(s string) []string {
 		Value int
 	}
 
-	var pairs []kv
+	// Создаем слайл для пар kv
+	pairs := make([]kv, 0, len(freqMap))
 	for k, v := range freqMap {
 		pairs = append(pairs, kv{k, v})
 	}
@@ -29,14 +30,15 @@ func Top10(s string) []string {
 		return pairs[i].Value > pairs[j].Value // по значению desc
 	})
 
-	var result []string
-
-	for _, pair := range pairs {
-		result = append(result, pair.Key)
+	// Определяем размер итогового слайса
+	n := len(pairs)
+	if n > 10 {
+		n = 10
 	}
 
-	if len(result) > 10 {
-		return result[:10]
+	result := make([]string, 0, n)
+	for i := 0; i < n; i++ {
+		result = append(result, pairs[i].Key)
 	}
 
 	return result
